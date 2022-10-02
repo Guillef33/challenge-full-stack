@@ -49,13 +49,22 @@ function FilterTable() {
 
     const filterEgresos = () => {
      let listado = listaFacturas.filter(egreso => egreso.tipo === "egreso")
-     console.log(listado)
       setShowEgresos(!showEgresos)
       setShowIngresos(false)
-
-      console.log(showEgresos)
      return listado;
     }
+
+  const [categoria, setCategoria] = useState("");
+
+
+  const filterCategorias = (e) => {
+     let categoriaElegida = e.target.categoria.value;
+     console.log(categoriaElegida)
+     let categoriaLista = listaFacturas.filter(ingreso => ingreso.categoria === categoriaElegida)
+     console.log(categoriaLista)
+     return categoriaLista;
+    }
+
 
   const getIngresos = (e) => {
     Axios.get("http://localhost:3050/facturas-ingresos").then((response) => {
@@ -73,9 +82,8 @@ function FilterTable() {
 
   const sumarMonto = ( tipo ) => {
   const plata = tipo.map(factura => factura.monto)
-  console.log(plata)
     for (let i = 0; i < plata.length; i++ ) {
-        console.log(totalIngresos += plata[i])
+        totalIngresos += plata[i]
       }
     return totalIngresos;
     }
@@ -108,15 +116,17 @@ function FilterTable() {
             <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
             <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
             <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
-          <Select
-          label="Categoria"
-          name="categoria"
-        >
-          <MenuItem value="entretenimiento" >Entretenimiento</MenuItem>
+            <TableCell align="right"><Select
+            label="Categoria"
+            name="categoria"
+            value={categoria}
+            onChange={filterCategorias}
+            >
+          <MenuItem value="entretenimiento">Entretenimiento</MenuItem>
           <MenuItem value="comida">Comida</MenuItem>
           <MenuItem value="hogar">Hogar</MenuItem>
-
         </Select>
+        </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

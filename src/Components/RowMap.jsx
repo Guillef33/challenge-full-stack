@@ -5,8 +5,6 @@ import { Button, TableFooter, TableCell, TableRow } from '@mui/material'
 
 function RowMap( {lista, editarTurno, cancelarTurno} ) {
 
-    console.log(lista)
-
   return (
         <>
     {lista.map((item) => (

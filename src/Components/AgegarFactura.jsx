@@ -18,7 +18,7 @@ import {
 function AgregarFactura({}) {
 
   const [tipo, setTipo] = useState("ingreso");
-    const [categoria, setCategoria] = useState("");
+  const [categoria, setCategoria] = useState("");
 
   const [listado, setListado] = useState([]);
 
@@ -60,8 +60,6 @@ function AgregarFactura({}) {
     setSubmitted(true);
   };
 
-
-  console.log(listado)
 
   return (
     <Box onSubmit={handleSubmit} component="form" noValidate sx={{ mt: 1 }}>
