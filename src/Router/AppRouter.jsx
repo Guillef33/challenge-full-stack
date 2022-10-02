@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import ListaFacturas from "../Pages/ListaFacturas";
-import AgregarFactura from "../Components/AgegarFactura";
+import AgregarFactura from "../Components/Agregar/AgegarFactura";
 import LoginPage from '../Pages/Login'
 import Home from '../Pages/Home'
 

@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Button, TableFooter, Select, MenuItem, FormControl, InputLabel} from '@mui/material'
+import { Button, TableFooter, Select, MenuItem, FormControl, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
 import Axios from 'axios'
 import RowMap from "./RowMap";
+
+import Swal from 'sweetalert2';
+
 
 function FilterTable() {
  const [ingresos, setIngresos] = useState([]);
@@ -24,21 +20,6 @@ function FilterTable() {
       setListaFacturas(response.data);
     });
   };
-
-    function cancelarTurno (boton) {
-     const id = boton.target.value;
-      const name = boton.target.name;
-
-     console.log(id, name)
-     console.log('El turno va a ser cancelado. Enviar notificacion al cliente?')
-  }
-
-    function editarTurno() {
-      console.log(
-        "El turno va a ser editado. Enviar notificacion al cliente?"
-      );
-    }
-
     const filterIngresos = () => {
      let listado = listaFacturas.filter(ingreso => ingreso.tipo === "ingreso")
      console.log(listado)
@@ -68,8 +49,7 @@ function FilterTable() {
       
     }
 
-
-
+    
   const getIngresos = (e) => {
     Axios.get("http://localhost:3050/facturas-ingresos").then((response) => {
       setIngresos(response.data);
@@ -106,6 +86,39 @@ function FilterTable() {
     setShowIngresos(false)
   }
 
+  
+    
+    function cancelarTurno () {
+         Swal.fire({
+      title: 'Error!',
+      text: 'Los campos no pueden estar vacios',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+  }
+
+    function editarTurno() {
+      Swal.fire({
+      title: 'Error!',
+      text: 'Los campos no pueden estar vacios',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+      
+    })
+    const res = Axios.put('http://localhost:3050/update',{
+      concepto: concepto,  
+      fecha: fecha,
+      monto: monto,
+      tipo: tipo,
+      categoria: categoria,
+    }).then((response) => {
+      console.log(response);  
+    });
+    }
+
+
+
+
 
   return (
 
@@ -120,18 +133,7 @@ function FilterTable() {
             <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
             <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
             <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
-            {/* <TableCell align="right"><Select
-            label="Categoria"
-            name="categoria"
-            value={categoria}
-            onChange={filterCategorias}
-            >
-          <MenuItem value="entretenimiento">Entretenimiento</MenuItem>
-          <MenuItem value="comida">Comida</MenuItem>
-          <MenuItem value="hogar">Hogar</MenuItem>
-        </Select>
-        </TableCell> */}
-
+  
         <TableCell align="right">
             <FormControl variant="outlined"> 
               <InputLabel htmlFor="outlined-age-native-simple">
@@ -151,13 +153,13 @@ function FilterTable() {
         <TableBody>
           {showIngresos      
           ? (   
-            <RowMap lista={ingresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
             )
            : (
             showEgresos ? (
-            <RowMap lista={egresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
             ) : (
-            <RowMap lista={listaFacturas} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
             ))}
 
         </TableBody>

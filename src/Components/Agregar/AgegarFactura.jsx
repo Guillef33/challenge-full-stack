@@ -22,16 +22,12 @@ function AgregarFactura({}) {
 
   const [listado, setListado] = useState([]);
 
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
-
     Axios.defaults.withCredentials = true;
 
-    const selectCategoria = (e) => {
-      setCategoria(e.target.value);
-    }
+  const selectCategoria = (e) => {
+    setCategoria(e.target.value);
+  }
 
-    console.log(categoria)
     
   const selectTipo = (e) => {
     setTipo(e.target.value);

@@ -1,7 +1,7 @@
 import React from "react";
 
-import Header from "../Components/Header";
-import FilterTable from "../Components/FilterTable";
+import Header from "../Components/Header/Header";
+import FilterTable from "../Components/Table/FilterTable";
 
 function ListaFacturas() {
   return (

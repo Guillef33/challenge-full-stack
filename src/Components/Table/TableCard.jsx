@@ -3,12 +3,11 @@ import React from 'react'
 import { Button, TableFooter, TableCell, TableRow } from '@mui/material'
 
 
-function RowMap( {lista, editarTurno, cancelarTurno} ) {
+
+function TableCard( { item, cancelarTurno, editarTurno }) {
+
 
   return (
-        <>
-    {lista.map((item) => (
-    
     <TableRow
         key={item.id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -23,13 +22,7 @@ function RowMap( {lista, editarTurno, cancelarTurno} ) {
         <TableCell align="right"> <Button onClick={editarTurno}>Editar</Button></TableCell>        
         <TableCell align="right"> <Button value={item.id} onClick={cancelarTurno}>Eliminar</Button></TableCell>             
 
-    </TableRow>
-    
-
-    
-    ))}
-    </>
-  )
+    </TableRow>  )
 }
 
-export default RowMap
+export default TableCard
