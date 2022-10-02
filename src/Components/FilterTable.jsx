@@ -9,10 +9,15 @@ import Paper from "@mui/material/Paper";
 import { Button, TableFooter } from '@mui/material'
 
 import Axios from 'axios'
+import RowMap from "./RowMap";
 
 function FilterTable() {
-
+ const [ingresos, setIngresos] = useState([]);
+ const [egresos, setEgresos] = useState([]);
  const [listaFacturas, setListaFacturas] = useState([]);
+ const [showIngresos, setShowIngresos] = useState(false)
+ const [showEgresos, setShowEgresos] = useState(false)
+
 
   const getFacturas = (e) => {
     Axios.get("http://localhost:3050/facturas").then((response) => {
@@ -20,12 +25,12 @@ function FilterTable() {
     });
   };
 
-  useEffect(() => {
-    getFacturas();
-  }, []);
+    function cancelarTurno (boton) {
+     const id = boton.target.value;
+      const name = boton.target.name;
 
-    function cancelarTurno () {
-    console.log('El turno va a ser cancelado. Enviar notificacion al cliente?')
+     console.log(id, name)
+     console.log('El turno va a ser cancelado. Enviar notificacion al cliente?')
   }
 
     function editarTurno() {
@@ -34,21 +39,56 @@ function FilterTable() {
       );
     }
 
-    let totalIngresos = 0;
-
-    const sumarMonto = () => {
-      const plata = listaFacturas.map(item => item.monto)
-      console.log(plata)
-      for (let i = 0; i < plata.length; i++ ) {
-        console.log(plata)
-        totalIngresos += plata[i]
-      }
-      return totalIngresos;
+    const filterIngresos = () => {
+     let listado = listaFacturas.filter(ingreso => ingreso.tipo === "ingreso")
+     console.log(listado)
+     setShowIngresos(!showIngresos)
+     return listado;
     }
 
-    sumarMonto()
+    const filterEgresos = () => {
+     let listado = listaFacturas.filter(egreso => egreso.tipo === "egreso")
+     console.log(listado)
+      setShowEgresos(!showEgresos)
+      console.log(showEgresos)
+     return listado;
+    }
 
-    console.log(totalIngresos)
+
+  const getIngresos = (e) => {
+    Axios.get("http://localhost:3050/facturas-ingresos").then((response) => {
+      setIngresos(response.data);
+    });
+  };
+
+    const getEgresos = (e) => {
+    Axios.get("http://localhost:3050/facturas-egresos").then((response) => {
+      setEgresos(response.data);
+    });
+  };
+
+
+  let totalIngresos = 0;
+
+  const sumarMonto = ( tipo ) => {
+  const plata = tipo.map(factura => factura.monto)
+  console.log(plata)
+    for (let i = 0; i < plata.length; i++ ) {
+        console.log(totalIngresos += plata[i])
+      }
+    return totalIngresos;
+    }
+    
+  useEffect(() => {
+    getFacturas();
+    getIngresos();
+    getEgresos();
+  }, []);
+
+  console.log(totalIngresos)
+
+  sumarMonto(ingresos)
+  sumarMonto(egresos)
 
 
   return (
@@ -61,29 +101,25 @@ function FilterTable() {
             <TableCell align="right">Monto</TableCell>
             <TableCell align="right">Fecha</TableCell>
             <TableCell align="right">Tipo</TableCell>
+            <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
+            <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {listaFacturas.map((item) => (
-            <>
-            <TableRow
-              key={item.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {item.concepto}
-              </TableCell>
-              <TableCell align="right">{item.monto}</TableCell>
-              <TableCell align="right">{item.fecha}</TableCell>
-              <TableCell align="right">{item.tipo}</TableCell>
-              <TableCell align="right"> <Button onClick={editarTurno}>Editar</Button></TableCell>        
-              <TableCell align="right"> <Button onClick={cancelarTurno}>Eliminar</Button></TableCell>             
-    
-            </TableRow>
-            
+          {showIngresos      
+          ? (   
+            showEgresos ? (
+                <RowMap lista={egresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            ) : (
+                <RowMap lista={ingresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            )
+          
+          ) : (
+            <RowMap lista={listaFacturas} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+          )
+
+          }
  
-            </>
-          ))}
         </TableBody>
         <TableFooter>
           <TableRow>

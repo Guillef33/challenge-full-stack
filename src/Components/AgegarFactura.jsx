@@ -41,9 +41,9 @@ function AgregarFactura({}) {
     }
     Axios.post("http://localhost:3050/add-bill", {
       concepto: concepto,  
+      fecha: fecha,
       monto: monto,
       tipo: tipo,
-      factura: factura,
     }).then((response) => {
       console.log(response);  
     });
@@ -93,7 +93,7 @@ function AgregarFactura({}) {
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         See custom request
       </Button>
-      <Button variant="outlined" component={Link} to="/">
+      <Button variant="outlined" component={Link} to="/dashboard">
         Back to home
       </Button>
     </Box>

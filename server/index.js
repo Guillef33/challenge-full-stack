@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://127.0.0.1:5173"],
-    methods: ["GET", "POST", "PUT"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -48,7 +48,7 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "",
-  database: "naturalrastas",
+  database: "facturaChallenge",
 });
 
 //Route
@@ -72,6 +72,7 @@ app.post("/add-bill", (req, res) => {
   const monto = req.body.monto;
   const fecha = req.body.fecha;
   const tipo = req.body.tipo;
+  console.log(concepto, monto, fecha, tipo);
 
   connection.query(
     "INSERT INTO facturas    (concepto, monto, fecha, tipo) VALUES (?,?,?, ?)",
@@ -82,9 +83,50 @@ app.post("/add-bill", (req, res) => {
   );
 });
 
-// Todos los turnos
+// Todos los turnos, mostrar los ultimos 10 turnos
 app.get("/facturas", (req, res) => {
-  connection.query("SELECT * FROM facturas", (error, result) => {
+  connection.query(
+    "SELECT * FROM facturas ORDER BY fecha desc LIMIT 10",
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+// Edit va con update, pasar el id y ver si se envia a AgregarFactura con los valores completados o bien en un modal
+
+app.get("/facturas-ingresos", (req, res) => {
+  connection.query(
+    "SELECT * FROM facturas WHERE tipo = 'ingreso'",
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/facturas-egresos", (req, res) => {
+  connection.query(
+    "SELECT * FROM facturas WHERE tipo = 'egreso'",
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/delete", (req, res) => {
+  connection.query("DELETE FROM facturas WHERE id = 1", (error, result) => {
     if (error) {
       console.log(error);
     } else {
