@@ -98,6 +98,38 @@ app.get("/facturas", (req, res) => {
   );
 });
 
+app.get("/facturas/:id", (req, res) => {
+  res.send("Get facturas by id");
+});
+
+app.put("/update", (req, res) => {
+  const concepto = req.body.concepto;
+  const monto = req.body.monto;
+  const fecha = req.body.fecha;
+  const tipo = req.body.tipo;
+  const categoria = req.body.categoria;
+  const id = req.body.id;
+
+  console.log(id, concepto, monto, fecha, tipo, categoria);
+
+  connection.query(
+    "UPDATE facturas SET concepto = ?, monto = ?, fecha = ?, tipo = ?, categoria =?  WHERE id = ?",
+    [concepto, monto, fecha, tipo, categoria, id]
+    // (error, result) => {
+    //   if (error) {
+    //     console.log(error);
+    //     res.send({ error: error });
+    //   } else {
+    //     res.send(result);
+    //   }
+    // }
+  );
+});
+
+app.delete("/delete/:id", (req, res) => {
+  res.send("Delete factura");
+});
+
 // Edit va con update, pasar el id y ver si se envia a AgregarFactura con los valores completados o bien en un modal
 
 app.get("/facturas-ingresos", (req, res) => {

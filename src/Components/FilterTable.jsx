@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button, TableFooter, Select, MenuItem } from '@mui/material'
+import { Button, TableFooter, Select, MenuItem, FormControl, InputLabel} from '@mui/material'
 
 import Axios from 'axios'
 import RowMap from "./RowMap";
@@ -54,16 +54,20 @@ function FilterTable() {
      return listado;
     }
 
-  const [categoria, setCategoria] = useState("");
+  const [categorias, setCategorias] = useState(['entretenimiento', 'hogar', 'comida']);
+    const [categoria, setCategoria] = useState('');
 
 
-  const filterCategorias = (e) => {
-     let categoriaElegida = e.target.categoria.value;
-     console.log(categoriaElegida)
-     let categoriaLista = listaFacturas.filter(ingreso => ingreso.categoria === categoriaElegida)
+  const selectCategoria = (e) => {
+      console.log('Select Categoria')
+      setCategoria(e.target.value);
+      console.log(categoria)
+     let categoriaLista = listaFacturas.filter(ingreso =>console.log(ingreso.categoria === categoria))
      console.log(categoriaLista)
      return categoriaLista;
+      
     }
+
 
 
   const getIngresos = (e) => {
@@ -116,7 +120,7 @@ function FilterTable() {
             <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
             <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
             <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
-            <TableCell align="right"><Select
+            {/* <TableCell align="right"><Select
             label="Categoria"
             name="categoria"
             value={categoria}
@@ -126,7 +130,22 @@ function FilterTable() {
           <MenuItem value="comida">Comida</MenuItem>
           <MenuItem value="hogar">Hogar</MenuItem>
         </Select>
-        </TableCell>
+        </TableCell> */}
+
+        <TableCell align="right">
+            <FormControl variant="outlined"> 
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Categorias
+              </InputLabel>
+              <Select native label="Value" value={categoria} onChange={selectCategoria}>
+                <option aria-label="None" value="" />
+                  {categorias.map((categoria, index) =>
+                    <option key={index} >{categoria}</option>    
+                  )}                             
+              </Select>
+            </FormControl>
+          </TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
