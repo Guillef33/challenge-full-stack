@@ -72,11 +72,12 @@ app.post("/add-bill", (req, res) => {
   const monto = req.body.monto;
   const fecha = req.body.fecha;
   const tipo = req.body.tipo;
-  console.log(concepto, monto, fecha, tipo);
+  const categoria = req.body.categoria;
+  console.log(concepto, monto, fecha, tipo, categoria);
 
   connection.query(
-    "INSERT INTO facturas    (concepto, monto, fecha, tipo) VALUES (?,?,?, ?)",
-    [concepto, monto, fecha, tipo],
+    "INSERT INTO facturas    (concepto, monto, fecha, tipo, categoria) VALUES (?,?,?,?,?)",
+    [concepto, monto, fecha, tipo, categoria],
     (err, result) => {
       console.log(err);
     }

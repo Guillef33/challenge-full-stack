@@ -1,13 +1,13 @@
 import React from "react";
 
 import Header from "../Components/Header";
-import ListFacturas from "../Components/ListFacturas";
+import FilterTable from "../Components/FilterTable";
 
 function ListaFacturas() {
   return (
     <>
       <Header />
-      <ListFacturas />
+      <FilterTable />  
     </>
   );
 }

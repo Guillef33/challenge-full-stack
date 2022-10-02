@@ -18,6 +18,8 @@ import {
 function AgregarFactura({}) {
 
   const [tipo, setTipo] = useState("ingreso");
+    const [categoria, setCategoria] = useState("");
+
   const [listado, setListado] = useState([]);
 
   const [submitted, setSubmitted] = useState(false);
@@ -25,6 +27,11 @@ function AgregarFactura({}) {
 
     Axios.defaults.withCredentials = true;
 
+    const selectCategoria = (e) => {
+      setCategoria(e.target.value);
+    }
+
+    console.log(categoria)
     
   const selectTipo = (e) => {
     setTipo(e.target.value);
@@ -36,6 +43,7 @@ function AgregarFactura({}) {
     const monto = e.target.monto.value;
     const tipo = e.target.tipo.value;
     const fecha = e.target.fecha.value;
+    const categoria = e.target.categoria.value;
     const factura = {
      concepto, monto, tipo, fecha
     }
@@ -44,6 +52,7 @@ function AgregarFactura({}) {
       fecha: fecha,
       monto: monto,
       tipo: tipo,
+      categoria: categoria,
     }).then((response) => {
       console.log(response);  
     });
@@ -88,7 +97,18 @@ function AgregarFactura({}) {
             type="date"
             sx={{ mt: 3, mb: 2 }}
             />
-              </FormControl>
+        <Select
+          label="Categoria"
+          name="categoria"
+          value={categoria}
+          onChange={selectCategoria}
+        >
+          <MenuItem value="entretenimiento">Entretenimiento</MenuItem>
+          <MenuItem value="comida">Comida</MenuItem>
+          <MenuItem value="hogar">Hogar</MenuItem>
+
+        </Select>
+      </FormControl>
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         See custom request

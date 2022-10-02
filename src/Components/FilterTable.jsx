@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button, TableFooter } from '@mui/material'
+import { Button, TableFooter, Select, MenuItem } from '@mui/material'
 
 import Axios from 'axios'
 import RowMap from "./RowMap";
@@ -43,6 +43,7 @@ function FilterTable() {
      let listado = listaFacturas.filter(ingreso => ingreso.tipo === "ingreso")
      console.log(listado)
      setShowIngresos(!showIngresos)
+     setShowEgresos(false)
      return listado;
     }
 
@@ -50,10 +51,11 @@ function FilterTable() {
      let listado = listaFacturas.filter(egreso => egreso.tipo === "egreso")
      console.log(listado)
       setShowEgresos(!showEgresos)
+      setShowIngresos(false)
+
       console.log(showEgresos)
      return listado;
     }
-
 
   const getIngresos = (e) => {
     Axios.get("http://localhost:3050/facturas-ingresos").then((response) => {
@@ -66,7 +68,6 @@ function FilterTable() {
       setEgresos(response.data);
     });
   };
-
 
   let totalIngresos = 0;
 
@@ -85,10 +86,13 @@ function FilterTable() {
     getEgresos();
   }, []);
 
-  console.log(totalIngresos)
-
   sumarMonto(ingresos)
   sumarMonto(egresos)
+
+  const showAll = () => {
+    setShowEgresos(false)
+    setShowIngresos(false)
+  }
 
 
   return (
@@ -103,29 +107,35 @@ function FilterTable() {
             <TableCell align="right">Tipo</TableCell>
             <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
             <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
+            <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
+          <Select
+          label="Categoria"
+          name="categoria"
+        >
+          <MenuItem value="entretenimiento" >Entretenimiento</MenuItem>
+          <MenuItem value="comida">Comida</MenuItem>
+          <MenuItem value="hogar">Hogar</MenuItem>
+
+        </Select>
           </TableRow>
         </TableHead>
         <TableBody>
           {showIngresos      
           ? (   
-            showEgresos ? (
-                <RowMap lista={egresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
-            ) : (
-                <RowMap lista={ingresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            <RowMap lista={ingresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
             )
-          
-          ) : (
+           : (
+            showEgresos ? (
+            <RowMap lista={egresos} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
+            ) : (
             <RowMap lista={listaFacturas} editarTurno={editarTurno} cancelarTurno={cancelarTurno} />
-          )
+            ))}
 
-          }
- 
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell>Total Ingresos</TableCell>
             <TableCell align="right">{totalIngresos}</TableCell>
-
           </TableRow>
         </TableFooter>
       </Table>

@@ -21,6 +21,7 @@ function RowMap( {lista, editarTurno, cancelarTurno} ) {
         <TableCell align="right">{item.monto}</TableCell>
         <TableCell align="right">{item.fecha}</TableCell>
         <TableCell align="right">{item.tipo}</TableCell>
+        <TableCell align="right">{item.categoria}</TableCell>
         <TableCell align="right"> <Button onClick={editarTurno}>Editar</Button></TableCell>        
         <TableCell align="right"> <Button value={item.id} onClick={cancelarTurno}>Eliminar</Button></TableCell>             
 

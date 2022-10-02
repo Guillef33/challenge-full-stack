@@ -88,7 +88,6 @@ function Login() {
           type="password"
           placeholder="Ingrese su password"
           name="password"
-
         />
 
         <button type="submit">
