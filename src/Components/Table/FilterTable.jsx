@@ -175,6 +175,7 @@ function FilterTable() {
             ))}
 
         </TableBody>
+            <TableFooter>Hola</TableFooter>
 
 
       </Table>

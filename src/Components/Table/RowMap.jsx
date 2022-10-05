@@ -29,12 +29,11 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
 
       <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal}/>    
     ))}
-        <TableFooter>
+    
           <TableRow>
             <TableCell>Total Ingresos</TableCell>
             <TableCell align="right">{totalIngresos}</TableCell>
           </TableRow>
-        </TableFooter>
 
     </>
   )
