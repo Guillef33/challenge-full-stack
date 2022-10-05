@@ -30,6 +30,7 @@ function FilterTable() {
 
     const filterEgresos = () => {
      let listado = listaFacturas.filter(egreso => egreso.tipo === "egreso")
+     /// Hacer algo tridimensional por string o number
       setShowEgresos(!showEgresos)
       setShowIngresos(false)
      return listado;
@@ -62,32 +63,20 @@ function FilterTable() {
     });
   };
 
-  let totalIngresos = 0;
-
-  const sumarMonto = ( tipo ) => {
-  const plata = tipo.map(factura => factura.monto)
-    for (let i = 0; i < plata.length; i++ ) {
-        totalIngresos += plata[i]
-      }
-    return totalIngresos;
-    }
     
+  // Analizar que dependencia puede generar el cambio 
   useEffect(() => {
     getFacturas();
     getIngresos();
     getEgresos();
   }, []);
 
-  sumarMonto(ingresos)
-  sumarMonto(egresos)
 
   const showAll = () => {
     setShowEgresos(false)
     setShowIngresos(false)
   }
 
-  
-    
     function cancelarTurno () {
          Swal.fire({
       title: 'Error!',
@@ -97,28 +86,41 @@ function FilterTable() {
     })
   }
 
-    function editarTurno() {
-      Swal.fire({
-      title: 'Error!',
-      text: 'Los campos no pueden estar vacios',
-      icon: 'error',
-      confirmButtonText: 'Cool'
+      const [showModal, setShowModal] = useState(false)
+
+
+    function editFactura( id ) {
+
+      console.log(id)
+    //   Swal.fire({
+    //   title: 'Error!',
+    //   text: 'Los campos no pueden estar vacios',
+    //   icon: 'error',
+    //   confirmButtonText: 'Cool'
       
-    })
-    const res = Axios.put('http://localhost:3050/update',{
-      concepto: concepto,  
-      fecha: fecha,
-      monto: monto,
-      tipo: tipo,
-      categoria: categoria,
+    // })
+
+    setShowModal(true);
+
+    const res = Axios.put(`http://localhost:3050/update/${id}`,{
+      concepto: "Hola probanod",  
+      fecha: "29/02/22",
+      monto: 2000,
+      tipo: "ingreso",
+      categoria: "entretenimiento",
+      id: 1
     }).then((response) => {
       console.log(response);  
     });
+
+    // Armar un formulario que tenga todos los datos que ya tiene la linea la tarea
+    // Crear estado cuando se abra el formulario  
+    // O abrir otra ventana aparte
+    // Y cuando presione editar se le envian todos los datos del componente a 
+    // Le das un value
+    // Y cuando presione editar se le envia y se le da un mensaje
+
     }
-
-
-
-
 
   return (
 
@@ -151,24 +153,30 @@ function FilterTable() {
           </TableRow>
         </TableHead>
         <TableBody>
+{/* 
+          pasar un string o un numero, y que le des el nombre de lo que queres renderizar
+          {(if ingreso.tipo === 'ingresos') {
+            render (
+              
+            )
+          }
+
+          } */}
+
           {showIngresos      
           ? (   
-            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
+            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal} />
             )
            : (
             showEgresos ? (
-            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
+            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}/>
             ) : (
-            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editarTurno={editarTurno} />
+            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}/>
             ))}
 
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell>Total Ingresos</TableCell>
-            <TableCell align="right">{totalIngresos}</TableCell>
-          </TableRow>
-        </TableFooter>
+
+
       </Table>
     </TableContainer>
   );

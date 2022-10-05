@@ -2,9 +2,9 @@ import React from 'react'
 
 import { Button, TableFooter, TableCell, TableRow } from '@mui/material'
 
+import ModalEdit from './ModalEdit'
 
-
-function TableCard( { item, cancelarTurno, editarTurno }) {
+function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal }) {
 
 
   return (
@@ -19,8 +19,13 @@ function TableCard( { item, cancelarTurno, editarTurno }) {
         <TableCell align="right">{item.fecha}</TableCell>
         <TableCell align="right">{item.tipo}</TableCell>
         <TableCell align="right">{item.categoria}</TableCell>
-        <TableCell align="right"> <Button onClick={editarTurno}>Editar</Button></TableCell>        
-        <TableCell align="right"> <Button value={item.id} onClick={cancelarTurno}>Eliminar</Button></TableCell>             
+        <TableCell align="right"> <Button onClick={() => setShowModal(true)}>Editar</Button></TableCell>        
+        <TableCell align="right"> <Button value={item.id} onClick={cancelarTurno}>Eliminar</Button></TableCell>        
+
+        {showModal ? 
+        <ModalEdit showModal={showModal} setShowModal={setShowModal} editarTurno={editarTurno} item={item}/>
+        : null}
+
 
     </TableRow>  )
 }
