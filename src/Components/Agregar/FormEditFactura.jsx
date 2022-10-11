@@ -74,7 +74,7 @@ function FormEditFactura({ editFactura, item}) {
         name="concepto"
         autoFocus
         type="text"
-        // value={item.concepto}
+        value={item.concepto}
       />
         <TextField
         margin="normal"
@@ -82,14 +82,14 @@ function FormEditFactura({ editFactura, item}) {
         name="monto"
         autoFocus
         type="number"
-        // value={item.monto}
+        value={item.monto}
 
       />
 
         <Select
           label="Tipo"
           name="tipo"
-          // value={item.tipo}
+          value={item.tipo}
           onChange={selectTipo}
 
         >
@@ -108,7 +108,7 @@ function FormEditFactura({ editFactura, item}) {
         <Select
           label="Categoria"
           name="categoria"
-          // value={item.categoria}
+          value={item.categoria}
           onChange={selectCategoria}
         >
           <MenuItem value="entretenimiento">Entretenimiento</MenuItem>

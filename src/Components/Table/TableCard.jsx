@@ -10,25 +10,14 @@ import Swal from 'sweetalert2';
 
 import { FacturasContext } from '../../Context/FacturasContext';
 
-function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal }) {
+function TableCard( { item, editarTurno}) {
 
-//   const {
-//     cancelarTurno
-//   } = useContext(FacturasContext);
+ const {
+ cancelarTurno,
+    showModal,
+      setShowModal
+ } = useContext(FacturasContext);
 
-function cancelarTurno (id) {
-    Axios.delete(`http://localhost:3050/delete/${id}`, {
-
-      }).then((response) => {
-         Swal.fire({
-        title: 'Factura eliminada',
-        text: 'Excelente, ya no la veras en la lista',
-        icon: 'danger',
-        confirmButtonText: 'Seguir'
-    })
-    // Todo bien pero no actualiza la pagina
-    });
-  }
 
   return (
     <>
@@ -46,8 +35,7 @@ function cancelarTurno (id) {
         <TableCell align="right"> <Button onClick={() => setShowModal(true)}>Editar</Button></TableCell>     
         <TableCell align="right"> <Button onClick={() => cancelarTurno(item.id)}>Borrar</Button></TableCell>        
    
-              
-
+            
         {showModal ? 
         <ModalEdit showModal={showModal} setShowModal={setShowModal} editarTurno={editarTurno} item={item}/>
         : null}
