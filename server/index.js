@@ -62,11 +62,11 @@ app.get("/bills", (req, res) => {
   res.send("Welcome to the dashboard where you can see your last 10 bills");
 });
 
-app.get("/bills/:id", (req, res) => {
-  res.send("Get bill by id");
+app.get("/facturas/:id", (req, res) => {
+  res.send("Get facturas por id");
 });
 
-app.post("/add-bill", (req, res) => {
+app.post("/add-factura", (req, res) => {
   res.send("We are here");
   const concepto = req.body.concepto;
   const monto = req.body.monto;
@@ -76,7 +76,7 @@ app.post("/add-bill", (req, res) => {
   console.log(concepto, monto, fecha, tipo, categoria);
 
   connection.query(
-    "INSERT INTO facturas    (concepto, monto, fecha, tipo, categoria) VALUES (?,?,?,?,?)",
+    "INSERT INTO facturas (concepto, monto, fecha, tipo, categoria) VALUES (?,?,?,?,?)",
     [concepto, monto, fecha, tipo, categoria],
     (err, result) => {
       console.log(err);
@@ -125,8 +125,14 @@ app.put("/update/:id", (req, res) => {
   );
 });
 
-app.delete("/delete/:id", (req, res) => {
-  res.send("Delete factura");
+app.delete("/delete", (req, res) => {
+  connection.query("DELETE FROM facturas WHERE id = ${id}", (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 // Edit va con update, pasar el id y ver si se envia a AgregarFactura con los valores completados o bien en un modal
@@ -155,16 +161,6 @@ app.get("/facturas-egresos", (req, res) => {
       }
     }
   );
-});
-
-app.delete("/delete", (req, res) => {
-  connection.query("DELETE FROM facturas WHERE id = 1", (error, result) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.send(result);
-    }
-  });
 });
 
 // Crud

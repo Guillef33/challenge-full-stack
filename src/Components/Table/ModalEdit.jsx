@@ -31,7 +31,6 @@ export default function BasicModal( {showModal, setShowModal, editFactura, setEd
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       > 
-    
         <Box sx={style}>
           <FormEditFactura item={item} editFactura={editFactura} />
           <Button onClick={handleClose}>Cerrar</Button>

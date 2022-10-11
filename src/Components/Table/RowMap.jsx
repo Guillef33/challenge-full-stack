@@ -25,15 +25,12 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
 
   return (
         <>
-    {lista.map((item) => (
+    {lista.map((item, index) => (
 
-      <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal}/>    
+      <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal} key={index}/>    
     ))}
     
-          <TableRow>
-            <TableCell>Total Ingresos</TableCell>
-            <TableCell align="right">{totalIngresos}</TableCell>
-          </TableRow>
+
 
     </>
   )

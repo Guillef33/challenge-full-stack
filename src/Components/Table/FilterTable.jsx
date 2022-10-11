@@ -4,6 +4,12 @@ import { Button, TableFooter, Select, MenuItem, FormControl, InputLabel, Table, 
 import Axios from 'axios'
 import RowMap from "./RowMap";
 
+import * as XLSX from "xlsx";
+
+import { read, writeFileXLSX } from "xlsx";
+
+
+
 import Swal from 'sweetalert2';
 
 
@@ -37,7 +43,7 @@ function FilterTable() {
     }
 
   const [categorias, setCategorias] = useState(['entretenimiento', 'hogar', 'comida']);
-    const [categoria, setCategoria] = useState('');
+  const [categoria, setCategoria] = useState('');
 
 
   const selectCategoria = (e) => {
@@ -46,8 +52,7 @@ function FilterTable() {
       console.log(categoria)
      let categoriaLista = listaFacturas.filter(ingreso =>console.log(ingreso.categoria === categoria))
      console.log(categoriaLista)
-     return categoriaLista;
-      
+     return categoriaLista; 
     }
 
     
@@ -71,6 +76,8 @@ function FilterTable() {
     getEgresos();
   }, []);
 
+  console.log(ingresos)
+
 
   const showAll = () => {
     setShowEgresos(false)
@@ -78,7 +85,7 @@ function FilterTable() {
   }
 
     function cancelarTurno () {
-         Swal.fire({
+    Swal.fire({
       title: 'Error!',
       text: 'Los campos no pueden estar vacios',
       icon: 'error',
@@ -103,15 +110,18 @@ function FilterTable() {
     setShowModal(true);
 
     const res = Axios.put(`http://localhost:3050/update/${id}`,{
-      concepto: "Hola probanod",  
+      concepto: "Trabajos de carpinteria",  
       fecha: "29/02/22",
-      monto: 2000,
-      tipo: "ingreso",
-      categoria: "entretenimiento",
+      monto: '2000',
+      tipo: "egreso",
+      categoria: "hogar",
       id: 1
     }).then((response) => {
       console.log(response);  
+      
     });
+
+
 
     // Armar un formulario que tenga todos los datos que ya tiene la linea la tarea
     // Crear estado cuando se abra el formulario  
@@ -121,6 +131,32 @@ function FilterTable() {
     // Y cuando presione editar se le envia y se le da un mensaje
 
     }
+
+    const handleExport = () => {
+      console.log(listaFacturas)
+      let wb = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(listaFacturas) ;
+
+      XLSX.utils.book_append_sheet(wb, ws, "ListaFacturas1");
+
+      XLSX.writeFile(wb, 'ListaFacturas.xlsx');
+    }
+
+      let totalIngresos = 0;
+
+    // Probar hacer el filtro de acuerdo a si es ingreso, egreso, o total
+      const sumarMonto = ( tipo ) => {
+      const plata = tipo.map(factura => factura.monto)
+        for (let i = 0; i < plata.length; i++ ) {
+            totalIngresos += plata[i]
+          }
+        return totalIngresos;
+        }
+
+        
+      sumarMonto(ingresos)
+      sumarMonto(egresos)
+
 
   return (
 
@@ -150,7 +186,9 @@ function FilterTable() {
             </FormControl>
           </TableCell>
 
+
           </TableRow>
+
         </TableHead>
         <TableBody>
 {/* 
@@ -165,17 +203,24 @@ function FilterTable() {
 
           {showIngresos      
           ? (   
-            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal} />
+            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             )
            : (
             showEgresos ? (
-            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}/>
+            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             ) : (
-            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}/>
+            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             ))}
 
         </TableBody>
-            <TableFooter>Hola</TableFooter>
+            <TableFooter>
+              <TableRow>
+                <TableCell>Total Ingresos</TableCell>
+                <TableCell align="right">{totalIngresos}</TableCell>
+                        <TableCell align="right"> <Button onClick={handleExport}>Exportar a XLS</Button></TableCell>  
+
+              </TableRow>
+            </TableFooter>
 
 
       </Table>

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import Axios from "axios";
 
+import Swal from 'sweetalert2';
 
 import {
   Box,
@@ -43,7 +44,7 @@ function AgregarFactura({}) {
     const factura = {
      concepto, monto, tipo, fecha
     }
-    Axios.post("http://localhost:3050/add-bill", {
+    Axios.post("http://localhost:3050/add-factura", {
       concepto: concepto,  
       fecha: fecha,
       monto: monto,
@@ -51,8 +52,14 @@ function AgregarFactura({}) {
       categoria: categoria,
     }).then((response) => {
       console.log(response);  
+      Swal.fire({
+      title: 'Agregaste una nueva factura!',
+      text: 'Excelente, ya puedes verla en la lista',
+      icon: 'success',
+      confirmButtonText: 'Seguir'
+    })
     });
-        listado.push(factura)
+    listado.push(factura)
     setSubmitted(true);
   };
 
@@ -105,10 +112,10 @@ function AgregarFactura({}) {
       </FormControl>
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        See custom request
+        Publicar
       </Button>
       <Button variant="outlined" component={Link} to="/dashboard">
-        Back to home
+       Volver a facturas
       </Button>
     </Box>
   );

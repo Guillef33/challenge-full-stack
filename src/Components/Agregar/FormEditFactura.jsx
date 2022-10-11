@@ -91,9 +91,6 @@ function FormEditFactura({ editFactura, item}) {
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Edit Tarea
       </Button>
-      <Button variant="outlined" component={Link} to="/dashboard">
-        Back to home
-      </Button>
     </Box>
   );
 }
