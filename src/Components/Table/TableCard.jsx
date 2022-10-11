@@ -1,4 +1,4 @@
-import React from 'react'
+import React,  { useContext } from 'react'
 
 import { Button, TableFooter, TableCell, TableRow } from '@mui/material'
 
@@ -8,13 +8,16 @@ import Axios from 'axios'
 
 import Swal from 'sweetalert2';
 
-
+import { FacturasContext } from '../../Context/FacturasContext';
 
 function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal }) {
 
+//   const {
+//     cancelarTurno
+//   } = useContext(FacturasContext);
 
-    function cancelarTurno (id) {
-      Axios.delete(`http://localhost:3050/delete/${id}`, {
+function cancelarTurno (id) {
+    Axios.delete(`http://localhost:3050/delete/${id}`, {
 
       }).then((response) => {
          Swal.fire({
@@ -24,9 +27,7 @@ function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal 
         confirmButtonText: 'Seguir'
     })
     // Todo bien pero no actualiza la pagina
-      
     });
-
   }
 
   return (
