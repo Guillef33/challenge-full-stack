@@ -123,8 +123,54 @@ function cancelarTurno (id) {
 
     }
 
+    const updateFactura = ( id, form ) => {
+
+    const concepto = form.concepto;
+    const monto =form.monto;
+    const tipo = form.tipo;
+    const fecha = form.fecha;
+    const categoria = form.categoria;
+
+    console.log(concepto, monto, tipo, fecha, categoria)
+
+    Axios.put(`http://localhost:3050/update/${id}`, {
+      concepto: concepto,  
+      fecha: fecha,
+      monto: monto,
+      tipo: tipo,
+      categoria: categoria,
+      id: id
+    }).then((response) => {
+      console.log(response);  
+      Swal.fire({
+      title: 'Editaste tu factura',
+      text: 'Excelente, ya puedes verla actualizadda en la lista',
+      icon: 'success',
+      confirmButtonText: 'Seguir'
+    })
+    });
+    // listado.push(factura)
+    // setSubmitted(true);
+  };
 
 
+
+  
+  let totalIngresos = 0;
+
+// Probar hacer el filtro de acuerdo a si es ingreso, egreso, o total
+  const sumarMonto = ( tipo ) => {
+  const plata = tipo.map(factura => factura.monto)
+    for (let i = 0; i < plata.length; i++ ) {
+        totalIngresos += plata[i]
+      }
+    return totalIngresos;
+    }
+
+    
+  sumarMonto(ingresos)
+  sumarMonto(egresos)
+  sumarMonto(listaFacturas)
 
 
   return (
@@ -149,7 +195,10 @@ function cancelarTurno (id) {
       selectCategoria,
       listaFacturas,
       showModal,
-      setShowModal
+      setShowModal,
+      totalIngresos,
+      sumarMonto,
+      updateFactura
 
       }}
     >

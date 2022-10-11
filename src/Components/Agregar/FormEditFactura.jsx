@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Axios from "axios";
 
+import { FacturasContext } from '../../Context/FacturasContext';
 
 import {
   Box,
@@ -15,58 +16,44 @@ import {
   MenuItem,
 } from "@mui/material";
 
-function FormEditFactura({ editFactura, item}) {
+function FormEditFactura( ) {
 
-  const [tipo, setTipo] = useState("ingreso");
-  const [categoria, setCategoria] = useState("");
+     const {
+    listaFacturas,
+    updateFactura
+ } = useContext(FacturasContext);
 
-  const [listado, setListado] = useState([]);
+  const id = useParams()
 
-    Axios.defaults.withCredentials = true;
+  const [form, setForm] = useState ({
+    concepto: null,
+    tipo: null,
+    monto: null,
+    fecha: null,
+    categoria: null,
+
+})
+
+
+  // const [tipo, setTipo] = useState("ingreso");
+  // const [categoria, setCategoria] = useState("");
+
+  // const [listado, setListado] = useState([]);
+
+  Axios.defaults.withCredentials = true;
 
   const selectCategoria = (e) => {
     setCategoria(e.target.value);
   }
-
     
   const selectTipo = (e) => {
     setTipo(e.target.value);
   };
 
 
-    const updateFactura = ( id ) => {
-    id.preventDefault();
-
-    const concepto = e.target.concepto.value;
-    const monto = e.target.monto.value;
-    const tipo = e.target.tipo.value;
-    const fecha = e.target.fecha.value;
-    const categoria = e.target.categoria.value;
-
-    console.log(concepto, monto, tipo, fecha, categoria)
-
-    Axios.put(`http://localhost:3050/update/${id}`, {
-      concepto: concepto,  
-      fecha: fecha,
-      monto: monto,
-      tipo: tipo,
-      categoria: categoria,
-      id: id
-    }).then((response) => {
-      console.log(response);  
-      Swal.fire({
-      title: 'Editaste tu factura',
-      text: 'Excelente, ya puedes verla actualizadda en la lista',
-      icon: 'success',
-      confirmButtonText: 'Seguir'
-    })
-    });
-    // listado.push(factura)
-    // setSubmitted(true);
-  };
 
   return (
-    <Box onSubmit={() => updateFactura(item.id)} component="form" noValidate sx={{ mt: 1 }}>
+    <Box component="form" noValidate sx={{ mt: 1 }}>
       <FormControl fullWidth>
         <TextField
         margin="normal"
@@ -74,7 +61,9 @@ function FormEditFactura({ editFactura, item}) {
         name="concepto"
         autoFocus
         type="text"
-        value={item.concepto}
+        // value={form.concepto}
+        onChange={(e) => setForm({ ...form, [e.target.name] : e.target.value}) }
+
       />
         <TextField
         margin="normal"
@@ -82,15 +71,19 @@ function FormEditFactura({ editFactura, item}) {
         name="monto"
         autoFocus
         type="number"
-        value={item.monto}
+        // value={form.monto}
+        onChange={(e) => setForm({ ...form, [e.target.name] : e.target.value}) }
+
 
       />
 
         <Select
           label="Tipo"
           name="tipo"
-          value={item.tipo}
-          onChange={selectTipo}
+        // value={form.tipo}
+          // onChange={selectTipo}
+        onChange={(e) => setForm({ ...form, [e.target.name] : e.target.value}) }
+
 
         >
           <MenuItem value="ingreso">Ingreso</MenuItem>
@@ -102,14 +95,18 @@ function FormEditFactura({ editFactura, item}) {
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
             sx={{ mt: 3, mb: 2 }}
-            value={item.fecha}
+        // value={form.fecha}
+                onChange={(e) => setForm({ ...form, [e.target.name] : e.target.value}) }
+
 
             />
         <Select
           label="Categoria"
           name="categoria"
-          value={item.categoria}
-          onChange={selectCategoria}
+        // value={form.categoria}
+          // onChange={selectCategoria}
+        onChange={(e) => setForm({ ...form, [e.target.name] : e.target.value}) }
+
         >
           <MenuItem value="entretenimiento">Entretenimiento</MenuItem>
           <MenuItem value="comida">Comida</MenuItem>
@@ -118,7 +115,7 @@ function FormEditFactura({ editFactura, item}) {
         </Select>
       </FormControl>
 
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+      <Button onClick={() => updateFactura(id.id, form)} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Edit Tarea
       </Button>
     </Box>

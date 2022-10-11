@@ -10,12 +10,16 @@ import Swal from 'sweetalert2';
 
 import { FacturasContext } from '../../Context/FacturasContext';
 
-function TableCard( { item, editarTurno}) {
+import { Link } from "react-router-dom";
+
+
+function TableCard( { item}) {
 
  const {
  cancelarTurno,
     showModal,
-      setShowModal
+      setShowModal,
+      editarFactura
  } = useContext(FacturasContext);
 
 
@@ -32,13 +36,17 @@ function TableCard( { item, editarTurno}) {
         <TableCell align="right">{item.fecha}</TableCell>
         <TableCell align="right">{item.tipo}</TableCell>
         <TableCell align="right">{item.categoria}</TableCell>
-        <TableCell align="right"> <Button onClick={() => setShowModal(true)}>Editar</Button></TableCell>     
+        <TableCell align="right"> 
+      <Link to={`/editar-factura/${item.id}`}>Editar Factura</Link>
+      </TableCell>   
+
+           
         <TableCell align="right"> <Button onClick={() => cancelarTurno(item.id)}>Borrar</Button></TableCell>        
    
             
-        {showModal ? 
+        {/* {showModal ? 
         <ModalEdit showModal={showModal} setShowModal={setShowModal} editarTurno={editarTurno} item={item}/>
-        : null}
+        : null} */}
 
 
     </TableRow> 
