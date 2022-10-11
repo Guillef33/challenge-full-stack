@@ -42,20 +42,7 @@ function FilterTable() {
      return listado;
     }
 
-  const [categorias, setCategorias] = useState(['entretenimiento', 'hogar', 'comida']);
-  const [categoria, setCategoria] = useState('');
 
-
-  const selectCategoria = (e) => {
-      console.log('Select Categoria')
-      setCategoria(e.target.value);
-      console.log(categoria)
-     let categoriaLista = listaFacturas.filter(ingreso =>console.log(ingreso.categoria === categoria))
-     console.log(categoriaLista)
-     return categoriaLista; 
-    }
-
-    
   const getIngresos = (e) => {
     Axios.get("http://localhost:3050/facturas-ingresos").then((response) => {
       setIngresos(response.data);
@@ -67,6 +54,26 @@ function FilterTable() {
       setEgresos(response.data);
     });
   };
+
+    // Categorias
+
+  const [categorias, setCategorias] = useState(['entretenimiento', 'hogar', 'comida']);
+  const [categoria, setCategoria] = useState('');
+
+
+  const selectCategoria = (e) => {
+     console.log('Select Categoria')
+     setCategoria(e.target.value);
+     console.log(categoria)
+     let categoriaLista = listaFacturas.filter(ingreso => console.log(ingreso.categoria === categoria))
+     console.log(categoriaLista)
+     return categoriaLista; 
+    }
+
+    const filterCategoria = () => {
+      let listado = listaFacturas.filter(categoria => categoria.tipo === categoriaLista)
+    }
+
 
     
   // Analizar que dependencia puede generar el cambio 
@@ -98,15 +105,7 @@ function FilterTable() {
 
     function editFactura( id ) {
 
-      console.log(id)
-    //   Swal.fire({
-    //   title: 'Error!',
-    //   text: 'Los campos no pueden estar vacios',
-    //   icon: 'error',
-    //   confirmButtonText: 'Cool'
-      
-    // })
-
+    console.log(id)
     setShowModal(true);
 
     const res = Axios.put(`http://localhost:3050/update/${id}`,{
@@ -121,77 +120,49 @@ function FilterTable() {
       
     });
 
-
-
-    // Armar un formulario que tenga todos los datos que ya tiene la linea la tarea
-    // Crear estado cuando se abra el formulario  
-    // O abrir otra ventana aparte
-    // Y cuando presione editar se le envian todos los datos del componente a 
-    // Le das un value
-    // Y cuando presione editar se le envia y se le da un mensaje
-
     }
 
-    const handleExport = () => {
-      console.log(listaFacturas)
-      let wb = XLSX.utils.book_new(),
-      ws = XLSX.utils.json_to_sheet(listaFacturas) ;
-
-      XLSX.utils.book_append_sheet(wb, ws, "ListaFacturas1");
-
-      XLSX.writeFile(wb, 'ListaFacturas.xlsx');
-    }
-
-      let totalIngresos = 0;
-
-    // Probar hacer el filtro de acuerdo a si es ingreso, egreso, o total
-      const sumarMonto = ( tipo ) => {
-      const plata = tipo.map(factura => factura.monto)
-        for (let i = 0; i < plata.length; i++ ) {
-            totalIngresos += plata[i]
-          }
-        return totalIngresos;
-        }
-
-        
-      sumarMonto(ingresos)
-      sumarMonto(egresos)
-
-
+ 
   return (
 
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
+        <TableRow>
+            <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
+            <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
+            <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
+            <TableCell align="right">
+              <FormControl variant="outlined"> 
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Categorias
+                </InputLabel>
+                <Select native label="Value" value={categoria} onChange={selectCategoria}>
+                  <option aria-label="None" value="" />
+                    {categorias.map((categoria, index) =>
+                      <option key={index} >{categoria}</option>    
+                    )}                             
+                </Select>
+              </FormControl>
+           </TableCell>
+        </TableRow>
+
           <TableRow>
             <TableCell>Concepto</TableCell>
             <TableCell align="right">Monto</TableCell>
             <TableCell align="right">Fecha</TableCell>
             <TableCell align="right">Tipo</TableCell>
-            <TableCell align="right"><Button onClick={filterIngresos}>Ver solo ingresos</Button></TableCell>
-            <TableCell align="right"><Button onClick={filterEgresos}>Ver solo egresos</Button></TableCell>
-            <TableCell align="right"><Button onClick={showAll}>Ver todo</Button></TableCell>
-  
-        <TableCell align="right">
-            <FormControl variant="outlined"> 
-              <InputLabel htmlFor="outlined-age-native-simple">
-                Categorias
-              </InputLabel>
-              <Select native label="Value" value={categoria} onChange={selectCategoria}>
-                <option aria-label="None" value="" />
-                  {categorias.map((categoria, index) =>
-                    <option key={index} >{categoria}</option>    
-                  )}                             
-              </Select>
-            </FormControl>
-          </TableCell>
+            <TableCell align="right">Categoria</TableCell>
+            <TableCell align="right">Editar</TableCell>
+            <TableCell align="right">Borrar</TableCell>
 
+        </TableRow>
+      
 
-          </TableRow>
 
         </TableHead>
         <TableBody>
-{/* 
+          {/* 
           pasar un string o un numero, y que le des el nombre de lo que queres renderizar
           {(if ingreso.tipo === 'ingresos') {
             render (
@@ -199,8 +170,25 @@ function FilterTable() {
             )
           }
 
-          } */}
+          } 
+          {/*
+          {if (ingreso.tipo === "ingresos") {
+            render (
+            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
+            )
+          }
+          
+          if (ingresos.tipo === "egresos") {
+            render (
+            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
+          )
+          } 
 
+          else (
+            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  /> 
+          )           
+          } 
+          {/* */}
           {showIngresos      
           ? (   
             <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
@@ -210,17 +198,10 @@ function FilterTable() {
             <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             ) : (
             <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
-            ))}
+            ))} */}
 
         </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>Total Ingresos</TableCell>
-                <TableCell align="right">{totalIngresos}</TableCell>
-                        <TableCell align="right"> <Button onClick={handleExport}>Exportar a XLS</Button></TableCell>  
-
-              </TableRow>
-            </TableFooter>
+         
 
 
       </Table>

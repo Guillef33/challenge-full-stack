@@ -8,9 +8,8 @@ import ModalEdit from './ModalEdit'
 function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal }) {
 
 
-
-
   return (
+    <>
     <TableRow
         key={item.id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -22,7 +21,9 @@ function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal 
         <TableCell align="right">{item.fecha}</TableCell>
         <TableCell align="right">{item.tipo}</TableCell>
         <TableCell align="right">{item.categoria}</TableCell>
-        <TableCell align="right"> <Button onClick={() => setShowModal(true)}>Editar</Button></TableCell>        
+        <TableCell align="right"> <Button onClick={() => setShowModal(true)}>Editar</Button></TableCell>     
+        <TableCell align="right"> <Button>Borrar</Button></TableCell>        
+   
               
 
         {showModal ? 
@@ -30,7 +31,10 @@ function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal 
         : null}
 
 
-    </TableRow>  )
+    </TableRow> 
+
+    </>
+    )
 }
 
 export default TableCard

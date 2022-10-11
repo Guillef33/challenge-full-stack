@@ -22,6 +22,20 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
     
   sumarMonto(ingresos)
   sumarMonto(egresos)
+  sumarMonto(lista)
+
+     // Export como XLS
+    const handleExport = () => {
+      console.log(listaFacturas)
+      let wb = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(listaFacturas) ;
+
+      XLSX.utils.book_append_sheet(wb, ws, "ListaFacturas1");
+
+      XLSX.writeFile(wb, 'ListaFacturas.xlsx');
+    }
+
+
 
   return (
         <>
@@ -29,9 +43,14 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
 
       <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal} key={index}/>    
     ))}
+      <TableFooter>
+        <TableRow>
+        <TableCell>Total Ingresos</TableCell>
+        <TableCell align="right">{totalIngresos}</TableCell>
+        <TableCell align="right"> <Button onClick={handleExport}>Exportar a XLS</Button></TableCell>  
+        </TableRow>
+    </TableFooter> 
     
-
-
     </>
   )
 }
