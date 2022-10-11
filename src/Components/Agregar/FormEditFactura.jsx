@@ -34,9 +34,39 @@ function FormEditFactura({ editFactura, item}) {
   };
 
 
+    const updateFactura = ( id ) => {
+    id.preventDefault();
+
+    const concepto = e.target.concepto.value;
+    const monto = e.target.monto.value;
+    const tipo = e.target.tipo.value;
+    const fecha = e.target.fecha.value;
+    const categoria = e.target.categoria.value;
+
+    console.log(concepto, monto, tipo, fecha, categoria)
+
+    Axios.put(`http://localhost:3050/update/${id}`, {
+      concepto: concepto,  
+      fecha: fecha,
+      monto: monto,
+      tipo: tipo,
+      categoria: categoria,
+      id: id
+    }).then((response) => {
+      console.log(response);  
+      Swal.fire({
+      title: 'Editaste tu factura',
+      text: 'Excelente, ya puedes verla actualizadda en la lista',
+      icon: 'success',
+      confirmButtonText: 'Seguir'
+    })
+    });
+    // listado.push(factura)
+    // setSubmitted(true);
+  };
 
   return (
-    <Box onSubmit={() => editFactura(item.id)} component="form" noValidate sx={{ mt: 1 }}>
+    <Box onSubmit={() => updateFactura(item.id)} component="form" noValidate sx={{ mt: 1 }}>
       <FormControl fullWidth>
         <TextField
         margin="normal"
@@ -44,7 +74,7 @@ function FormEditFactura({ editFactura, item}) {
         name="concepto"
         autoFocus
         type="text"
-        value={item.concepto}
+        // value={item.concepto}
       />
         <TextField
         margin="normal"
@@ -52,14 +82,14 @@ function FormEditFactura({ editFactura, item}) {
         name="monto"
         autoFocus
         type="number"
-        value={item.monto}
+        // value={item.monto}
 
       />
 
         <Select
           label="Tipo"
           name="tipo"
-          value={item.tipo}
+          // value={item.tipo}
           onChange={selectTipo}
 
         >
@@ -78,7 +108,7 @@ function FormEditFactura({ editFactura, item}) {
         <Select
           label="Categoria"
           name="categoria"
-          value={item.categoria}
+          // value={item.categoria}
           onChange={selectCategoria}
         >
           <MenuItem value="entretenimiento">Entretenimiento</MenuItem>

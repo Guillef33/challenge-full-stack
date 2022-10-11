@@ -6,6 +6,9 @@ import ModalEdit from './ModalEdit'
 
 import Axios from 'axios'
 
+import Swal from 'sweetalert2';
+
+
 
 function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal }) {
 
@@ -14,12 +17,17 @@ function TableCard( { item, cancelarTurno, editarTurno, showModal, setShowModal 
       Axios.delete(`http://localhost:3050/delete/${id}`, {
 
       }).then((response) => {
-      console.log(response);  
+         Swal.fire({
+        title: 'Factura eliminada',
+        text: 'Excelente, ya no la veras en la lista',
+        icon: 'danger',
+        confirmButtonText: 'Seguir'
+    })
+    // Todo bien pero no actualiza la pagina
       
     });
 
   }
-
 
   return (
     <>

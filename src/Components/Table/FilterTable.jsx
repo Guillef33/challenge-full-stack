@@ -19,6 +19,8 @@ function FilterTable() {
  const [listaFacturas, setListaFacturas] = useState([]);
  const [showIngresos, setShowIngresos] = useState(false)
  const [showEgresos, setShowEgresos] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+
 
 
   const getFacturas = (e) => {
@@ -93,16 +95,16 @@ function FilterTable() {
 
 
 
-      const [showModal, setShowModal] = useState(false)
 
 
 
     function editFactura( id ) {
 
-    console.log(id)
-    setShowModal(true);
+      console.log(id)
+      setShowModal(true);
 
-    const res = Axios.put(`http://localhost:3050/update/${id}`,{
+      Axios.put(`http://localhost:3050/update/${id}`,{ 
+      
       concepto: "Trabajos de carpinteria",  
       fecha: "29/02/22",
       monto: '2000',
@@ -115,6 +117,8 @@ function FilterTable() {
     });
 
     }
+
+
 
  
   return (

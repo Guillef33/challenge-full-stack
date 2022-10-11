@@ -43,13 +43,12 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
 
       <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal} key={index}/>    
     ))}
-      <TableFooter>
-        <TableRow>
+      <TableRow>
         <TableCell>Total Ingresos</TableCell>
         <TableCell align="right">{totalIngresos}</TableCell>
         <TableCell align="right"> <Button onClick={handleExport}>Exportar a XLS</Button></TableCell>  
-        </TableRow>
-    </TableFooter> 
+      </TableRow>
+
     
     </>
   )

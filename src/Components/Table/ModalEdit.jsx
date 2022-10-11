@@ -23,7 +23,7 @@ export default function BasicModal( {showModal, setShowModal, editFactura, setEd
   const handleClose = () => setShowModal(false);
 
   return (
-    <div>
+    <>
       <Button onClick={handleOpen}>Open modal</Button>
        <Modal
         open={showModal}
@@ -36,6 +36,6 @@ export default function BasicModal( {showModal, setShowModal, editFactura, setEd
           <Button onClick={handleClose}>Cerrar</Button>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }
