@@ -91,16 +91,10 @@ function FilterTable() {
     setShowIngresos(false)
   }
 
-    function cancelarTurno () {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Los campos no pueden estar vacios',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })
-  }
+
 
       const [showModal, setShowModal] = useState(false)
+
 
 
     function editFactura( id ) {
@@ -191,14 +185,14 @@ function FilterTable() {
           {/* */}
           {showIngresos      
           ? (   
-            <RowMap lista={ingresos}  cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
+            <RowMap lista={ingresos}   editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             )
            : (
             showEgresos ? (
-            <RowMap lista={egresos} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
+            <RowMap lista={egresos}  editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
             ) : (
-            <RowMap lista={listaFacturas} cancelarTurno={cancelarTurno} editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
-            ))} */}
+            <RowMap lista={listaFacturas}  editFactura={editFactura} ingresos={ingresos} egresos={egresos} showModal={showModal} setShowModal={setShowModal}  />
+            ))}
 
         </TableBody>
          

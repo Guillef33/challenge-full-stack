@@ -125,8 +125,9 @@ app.put("/update/:id", (req, res) => {
   );
 });
 
-app.delete("/delete", (req, res) => {
-  connection.query("DELETE FROM facturas WHERE id = ${id}", (error, result) => {
+app.delete("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  connection.query(`DELETE FROM facturas WHERE id = ${id}`, (error, result) => {
     if (error) {
       console.log(error);
     } else {
