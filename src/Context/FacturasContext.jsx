@@ -10,9 +10,13 @@ const FacturasProvider = (props) => {
   const [ingresos, setIngresos] = useState([]);
   const [egresos, setEgresos] = useState([]);
   const [listaFacturas, setListaFacturas] = useState([]);
+  const [comida, setComida] = useState([])
+  
   const [showIngresos, setShowIngresos] = useState(false);
   const [showEgresos, setShowEgresos] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showComida, setShowComida] = useState(false)
+
 
   function cancelarTurno(id) {
     Axios.delete(`http://localhost:3050/delete/${id}`, {}).then((response) => {
@@ -35,12 +39,13 @@ const FacturasProvider = (props) => {
   };
 
   const filterIngresos = () => {
-    console.log("Hola Filter Ingresos");
-
+ 
     let listado = listaFacturas.filter((ingreso) => ingreso.tipo === "ingreso");
     console.log(listado, "ingresos");
+    
     setShowIngresos(!showIngresos);
     setShowEgresos(false);
+
     setIngresos(listado)
     return listado;
   };
@@ -51,29 +56,30 @@ const FacturasProvider = (props) => {
 
     setShowEgresos(!showEgresos);
     setShowIngresos(false);
+
     setEgresos(listado)
 
     return listado;
   };
   // Categorias
 
-  const [showComida, setShowComida] = useState(false)
-  const [comida, setComida] = useState([])
-
-
   const filterComidas = () => {
-    console.log("Hola Filter Comidas")
 
-    let listado = listaFacturas.filter((categoria) => categoria.categoria === "comida");
+    let listado = listaFacturas.filter((comida) => comida.categoria === "comida");
 
     console.log(listado, "comida");
 
-    setShowEgresos(!showEgresos);
+    setShowEgresos(false);
     setShowIngresos(false);
-    setShowComida(true)
+
+    setShowComida(!showComida)
+
     setComida(listado)
     return listado;
   };
+
+
+
 
   const [categorias, setCategorias] = useState([
     "entretenimiento",
@@ -81,24 +87,26 @@ const FacturasProvider = (props) => {
     "comida",
   ]);
   const [categoria, setCategoria] = useState("");
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState([])
   const [comidas, setComidas] = useState([]);
 
-  const selectCategoria = (value) => {
-    setCategoria(value);
-    console.log(categoria);
+  const selectCategoria = (valorDeCategoria) => {
 
-    let categoriaLista = listaFacturas.filter(
-      (categoria) => categoria.categoria === categoria
+    console.log(valorDeCategoria);
+
+    let categoriaSeleccionada = listaFacturas.filter(
+      (seleccionada) => seleccionada.categoria === valorDeCategoria
     );
 
-    console.log(categoriaLista);
-    return categoriaLista;
+    console.log(categoriaSeleccionada);
+    return categoriaSeleccionada;
   };
 
   const filterCategoria = () => {
     let listado = listaFacturas.filter(
-      (categoria) => categoria.tipo === categoriaLista
+      (categoria) => categoria.tipo === categoriaSeleccionada
     );
+    setCategoriaSeleccionada(listado)
   };
 
   const getComidas = (e) => {
@@ -189,6 +197,10 @@ const FacturasProvider = (props) => {
          categoria,
     categorias,
     selectCategoria,
+    setCategoria,
+    setCategorias,
+    categoriaSeleccionada,
+    setCategoriaSeleccionada
       }}
     >
       {props.children}

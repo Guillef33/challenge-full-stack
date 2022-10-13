@@ -24,6 +24,8 @@ import { read, writeFileXLSX } from "xlsx";
 
 import { FacturasContext } from "../../Context/FacturasContext";
 
+import SelectorDeCategorias from "./SelectorDeCategorias";
+
 import Swal from "sweetalert2";
 function TableContainerMaster() {
   const {
@@ -39,20 +41,26 @@ function TableContainerMaster() {
     showModal,
     setShowModal,
     showComida,
-      filterComidas,
-       comidas,
-        setComidas
+    filterComidas,
+    comidas,
+    setComidas,
+    categorias,
+    categoria,
+    setCategorias,
+    setCategoria,
+    selectCategoria,
+        categoriaSeleccionada,
+    setCategoriaSeleccionada
   } = useContext(FacturasContext);
 
-  // const selectCategoryFromInput = (e) => {
-  //   console.log("se ejecuta");
-  //   selectCategoria(e.target.value);
-  // };
+  const selectCategoryFromInput = (e) => {
+    console.log("se ejecuta");
+    console.log(e.target.value)
+    setCategoria(e.target.value)
+    selectCategoria(categoria)
+  };
 
-    console.log(comidas, "comida")
-    console.log(showComida)
-    
-
+    console.log(categoria)
 
   return (
     <TableContainer component={Paper}>
@@ -71,25 +79,10 @@ function TableContainerMaster() {
             <TableCell align="right">
               <Button onClick={filterComidas}>Ver solo comidas</Button>
             </TableCell>
-          {/*   <TableCell align="right">
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-age-native-simple">
-                  Categorias
-                </InputLabel>
-    
-                <Select
-                  native
-                  label="Value"
-                  value={categoria}
-                  onChange={selectCategoryFromInput}
-                >
-                  <option aria-label="None" value="" />
-                  {categorias.map((categoria, index) => (
-                    <option key={index}>{categoria}</option>
-                  ))}
-                </Select> 
-              </FormControl>
-            </TableCell> */}
+
+            <SelectorDeCategorias />
+
+
           </TableRow>
 
           <TableRow>
@@ -103,13 +96,15 @@ function TableContainerMaster() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {showIngresos ? (
+
+       {showIngresos ? (
             <RowMap lista={ingresos} editFactura={editFactura} />
-          ) : showEgresos ? (
+          ) : 
+        showEgresos ? (
             <RowMap lista={egresos} editFactura={editFactura} />
           ) 
           : showComida ? (
-            <RowMap lista={comidas} editFactura={editFactura} />
+            <RowMap lista={categoriaSeleccionada} editFactura={editFactura} />
           ) 
           : (
             <RowMap lista={listaFacturas} editFactura={editFactura} />

@@ -35,7 +35,7 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
   sumarMonto(lista)
   }, [lista])
 
-  console.log(lista)
+  // console.log(lista)
 
   return (
         <>
