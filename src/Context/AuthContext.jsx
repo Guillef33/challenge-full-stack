@@ -40,12 +40,16 @@ const AuthProvider = (props) => {
     }
 
     Swal.fire({
-      title: 'Todo bien!',
-      text: 'Estamos listos para enviar la informacion',
-      icon: 'success',
-      confirmButtonText: 'Cool'
-    })
+title: "Todo bien",
+text: "Bienvenido a Facturas App",
+icon: "sucess",
+confirmButtonText: "Ingresa"
+})
+
+
   }
+
+    const [loginStatus, setLoginStatus] = useState("");
 
 
   const loginWeb = (e) => {
@@ -60,8 +64,20 @@ const AuthProvider = (props) => {
     email: email,
     password: password,
   }).then((response) => {
-    
-    navigate("/dashboard");
+    console.log(response.data)
+
+    if (response.data.message) {
+      setLoginStatus(response.data.message)
+        Swal.fire({
+      title: 'Error!',
+      text: `${response.data.message}`,
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+    } else {
+     navigate("/dashboard");
+
+    }
 
   });
   };

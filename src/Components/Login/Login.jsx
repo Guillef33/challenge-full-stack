@@ -8,9 +8,6 @@ import {AuthContext} from "../../Context/AuthContext";
 
 function Login() {
 
-  const [loginStatus, setLoginStatus] = useState("");
-
-
   const {
       auth,
       loginWeb,
