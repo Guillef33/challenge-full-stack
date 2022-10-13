@@ -8,6 +8,9 @@ function NavFacturas() {
     <ul className="flex-container">
       <h1>Facturas </h1>
       <Link to="/agregar-factura">Agregar Factura</Link>
+      
+      <Link to="/logout">Logout</Link>
+
     </ul>
   );
 }
