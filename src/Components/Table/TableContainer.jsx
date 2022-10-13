@@ -25,15 +25,11 @@ import { read, writeFileXLSX } from "xlsx";
 import { FacturasContext } from "../../Context/FacturasContext";
 
 import Swal from "sweetalert2";
-
-function FilterTable() {
+function TableContainerMaster() {
   const {
     filterEgresos,
     filterIngresos,
     showAll,
-    categoria,
-    categorias,
-    selectCategoria,
     showIngresos,
     showEgresos,
     listaFacturas,
@@ -42,16 +38,21 @@ function FilterTable() {
     egresos,
     showModal,
     setShowModal,
-    comidas,
-    getComidas,
+    showComida,
+      filterComidas,
+       comidas,
+        setComidas
   } = useContext(FacturasContext);
 
-  const selectCategoryFromInput = (e) => {
-    console.log("se ejecuta");
-    selectCategoria(e.target.value);
-  };
+  // const selectCategoryFromInput = (e) => {
+  //   console.log("se ejecuta");
+  //   selectCategoria(e.target.value);
+  // };
 
-  console.log(showIngresos)
+    console.log(comidas, "comida")
+    console.log(showComida)
+    
+
 
   return (
     <TableContainer component={Paper}>
@@ -68,10 +69,14 @@ function FilterTable() {
               <Button onClick={showAll}>Ver todo</Button>
             </TableCell>
             <TableCell align="right">
+              <Button onClick={filterComidas}>Ver solo comidas</Button>
+            </TableCell>
+          {/*   <TableCell align="right">
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-age-native-simple">
                   Categorias
                 </InputLabel>
+    
                 <Select
                   native
                   label="Value"
@@ -82,9 +87,9 @@ function FilterTable() {
                   {categorias.map((categoria, index) => (
                     <option key={index}>{categoria}</option>
                   ))}
-                </Select>
+                </Select> 
               </FormControl>
-            </TableCell>
+            </TableCell> */}
           </TableRow>
 
           <TableRow>
@@ -102,14 +107,18 @@ function FilterTable() {
             <RowMap lista={ingresos} editFactura={editFactura} />
           ) : showEgresos ? (
             <RowMap lista={egresos} editFactura={editFactura} />
-          ) :
-           (
+          ) 
+          : showComida ? (
+            <RowMap lista={comidas} editFactura={editFactura} />
+          ) 
+          : (
             <RowMap lista={listaFacturas} editFactura={editFactura} />
-          )}
+          )
+         }
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-export default FilterTable;
+export default TableContainerMaster;

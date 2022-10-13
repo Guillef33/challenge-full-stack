@@ -41,27 +41,28 @@ const FacturasProvider = (props) => {
     console.log(listado, "ingresos");
     setShowIngresos(!showIngresos);
     setShowEgresos(false);
+    setIngresos(listado)
     return listado;
   };
 
   const filterEgresos = () => {
-    console.log("Hola Filter Egresos");
-
     let listado = listaFacturas.filter((egreso) => egreso.tipo === "egreso");
-
-    /// Hacer algo tridimensional por string o number
-    console.log(listado, "egresos");
+    console.log(listado, "egreso");
 
     setShowEgresos(!showEgresos);
     setShowIngresos(false);
+    setEgresos(listado)
+
     return listado;
   };
   // Categorias
 
   const [showComida, setShowComida] = useState(false)
+  const [comida, setComida] = useState([])
+
 
   const filterComidas = () => {
-    console.log("Hola Filter Comidas");
+    console.log("Hola Filter Comidas")
 
     let listado = listaFacturas.filter((categoria) => categoria.categoria === "comida");
 
@@ -70,40 +71,41 @@ const FacturasProvider = (props) => {
     setShowEgresos(!showEgresos);
     setShowIngresos(false);
     setShowComida(true)
+    setComida(listado)
     return listado;
   };
 
-  // const [categorias, setCategorias] = useState([
-  //   "entretenimiento",
-  //   "hogar",
-  //   "comida",
-  // ]);
-  // const [categoria, setCategoria] = useState("");
-  // const [comidas, setComidas] = useState([]);
+  const [categorias, setCategorias] = useState([
+    "entretenimiento",
+    "hogar",
+    "comida",
+  ]);
+  const [categoria, setCategoria] = useState("");
+  const [comidas, setComidas] = useState([]);
 
-  // const selectCategoria = (value) => {
-  //   setCategoria(value);
-  //   console.log(categoria);
+  const selectCategoria = (value) => {
+    setCategoria(value);
+    console.log(categoria);
 
-  //   let categoriaLista = listaFacturas.filter(
-  //     (categoria) => categoria.categoria === categoria
-  //   );
+    let categoriaLista = listaFacturas.filter(
+      (categoria) => categoria.categoria === categoria
+    );
 
-  //   console.log(categoriaLista);
-  //   return categoriaLista;
-  // };
+    console.log(categoriaLista);
+    return categoriaLista;
+  };
 
-  // const filterCategoria = () => {
-  //   let listado = listaFacturas.filter(
-  //     (categoria) => categoria.tipo === categoriaLista
-  //   );
-  // };
+  const filterCategoria = () => {
+    let listado = listaFacturas.filter(
+      (categoria) => categoria.tipo === categoriaLista
+    );
+  };
 
-  // const getComidas = (e) => {
-  //   Axios.get("http://localhost:3050/categoria-hogar").then((response) => {
-  //     setComidas(response.data);
-  //   });
-  // };
+  const getComidas = (e) => {
+    Axios.get("http://localhost:3050/categoria-hogar").then((response) => {
+      setComidas(response.data);
+    });
+  };
 
   // Analizar que dependencia puede generar el cambio
   useEffect(() => {
@@ -173,22 +175,20 @@ const FacturasProvider = (props) => {
         getFacturas,
         filterIngresos,
         filterEgresos,
-        categoria,
-        setCategoria,
-        categorias,
-        setCategorias,
-        selectCategoria,
         listaFacturas,
         showModal,
         setShowModal,
         updateFactura,
-        comidas,
-        getComidas,
         showIngresos,
         showEgresos,
         filterComidas,
         showComida,
-        setShowComida
+        setShowComida,
+        comidas,
+        setComidas,
+         categoria,
+    categorias,
+    selectCategoria,
       }}
     >
       {props.children}
