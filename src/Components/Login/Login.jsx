@@ -53,22 +53,18 @@ function Login() {
     const password = e.target.password.value;
     console.log(email, password)
     loginValidations(email, password)
-      console.log('Estoy aca')
+    // console.log('Estoy aca')
     Axios.post("http://localhost:3050/login", {
       email: email,
       password: password,
     }).then((response) => {
+      navigate("/dashboard");
 
-      console.log(response)
-      console.log('Estoy aca')
-              navigate("/dashboard");
 
-      // if (response.data.message) {
-      //   console.log(response.data)
-      //   setLoginStatus(response.data.message);
+      // if (response.status === 200) {
+      //   navigate("/dashboard");
       // } else {
-      //   setLoginStatus(response.data[0].username);
-
+      //   console.log('El login fallo')
       // }
     });
   };

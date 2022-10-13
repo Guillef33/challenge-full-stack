@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 
 import { Button, TableFooter, TableCell, TableRow } from '@mui/material'
 
@@ -8,11 +8,6 @@ import { FacturasContext } from '../../Context/FacturasContext';
 
 
 function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModal, setShowModal} ) {
-
-     const {
-      totalIngresos,
-      sumarMonto
-    } = useContext(FacturasContext);
 
      // Export como XLS
     const handleExport = () => {
@@ -24,8 +19,21 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
 
       XLSX.writeFile(wb, 'ListaFacturas.xlsx');
     }
+    
+  let [total, setTotal] = useState(0)
 
+  const sumarMonto = ( lista ) => {
+    const monto = lista.map(factura => factura.monto)
+    
+  const sumWithInitial = monto.reduce(
+  (previousValue, currentValue) => previousValue + currentValue,
+    0);
+    setTotal(sumWithInitial)
+  }
 
+  useEffect(() => {     
+  sumarMonto(lista)
+  }, [lista])
 
   return (
         <>
@@ -34,8 +42,8 @@ function RowMap( {lista, editarTurno, cancelarTurno, ingresos, egresos, showModa
       <TableCard item={item} editarTurno={editarTurno} cancelarTurno={cancelarTurno} showModal={showModal} setShowModal={setShowModal} key={index}/>    
     ))}
       <TableRow>
-        <TableCell>Total Ingresos</TableCell>
-        {/* <TableCell align="right">{totalIngresos}</TableCell> */}
+        <TableCell>Total:</TableCell>
+        <TableCell align="right">{total}</TableCell>
         <TableCell align="right"> <Button onClick={handleExport}>Exportar a XLS</Button></TableCell>  
       </TableRow>
 
